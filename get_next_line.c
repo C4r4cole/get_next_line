@@ -6,43 +6,11 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:26:54 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/05/22 17:52:01 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/05/22 19:35:41 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	free_them_all(t_list **list, t_list *clean_node, char *buf)
-{
-	t_list	*tmp;
-	
-	if (!*list)
-		return ;
-	while (*list)
-	{
-		tmp = (*list)->next;
-		free((*list)->str_buf);
-		free(*list);
-		*list = tmp;
-	}
-	*list = NULL;
-	if (clean_node->str_buf[0])
-		*list = clean_node;
-	else
-	{
-		free(clean_node);
-		free(buf);
-	}
-}
-
-t_list	*find_last_node(t_list *list)
-{
-	if (!list)
-		return (NULL);
-	while (list->next)
-		list = list->next;
-	return (list);
-}
 
 void	clean_list(t_list **list)
 {
@@ -112,10 +80,15 @@ void	create_list(t_list **list, int fd)
 		if (!buf)
 			return;
 		char_read = read(fd, buf, BUFFER_SIZE);
-		if (!char_read)
+		if (char_read == 0)
 		{
 			free(buf);
-			return;
+			return ;
+		}
+		if (char_read == -1)
+		{
+			free(buf);
+			return ;
 		}
 		buf[char_read] = '\0';
 		append(list, buf);
@@ -126,9 +99,14 @@ char	*get_next_line(int fd)
 {
 	static	t_list	*list = NULL;
 	char			*next_line;
-	
+
+	next_line = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	{
+		free_them_all(&list, NULL, next_line);
+		list = NULL;
 		return (NULL);
+	}
 	create_list(&list, fd);
 	if(!list)
 		return (NULL);
