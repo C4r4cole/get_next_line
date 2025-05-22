@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:26:54 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/05/21 18:20:33 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:52:01 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ void	free_them_all(t_list **list, t_list *clean_node, char *buf)
 		*list = clean_node;
 	else
 	{
-		if (clean_node)
-			free(clean_node);
-		if (buf)
-			free(buf);
+		free(clean_node);
+		free(buf);
 	}
 }
 
@@ -59,13 +57,12 @@ void	clean_list(t_list **list)
 	if (!buf || !clean_node)
 		return ;
 	last_node = find_last_node(*list);
-
 	i = 0;
 	j = 0;
-	while (last_node->str_buf[i] != '\n' && last_node->str_buf[i] != '\0')
-		++i;
 	while (last_node->str_buf[i] && last_node->str_buf[i] != '\n')
-		buf[j++] = last_node->str_buf[i++];
+		++i;
+	while (last_node->str_buf[i] && last_node->str_buf[++i])
+		buf[j++] = last_node->str_buf[i];
 	buf[j] = '\0';
 	clean_node->str_buf = buf;
 	clean_node->next = NULL;
