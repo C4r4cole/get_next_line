@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 17:36:16 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/05/22 18:59:12 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/05/27 13:49:39 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	copy_str(t_list *list, char *str)
 {
 	int	i;
 	int	j;
-	
+
 	if (!list)
 		return ;
 	j = 0;
@@ -56,9 +56,9 @@ void	copy_str(t_list *list, char *str)
 		{
 			if (list->str_buf[i] == '\n')
 			{
-				str[j++] =  '\n';
+				str[j++] = '\n';
 				str[j] = '\0';
-				return;
+				return ;
 			}
 			str[j++] = list->str_buf[i++];
 		}
@@ -80,7 +80,7 @@ int	len_to_newline(t_list *list)
 		i = 0;
 		while (list->str_buf[i])
 		{
-			if ( list->str_buf[i] == '\n')
+			if (list->str_buf[i] == '\n')
 			{
 				++len;
 				return (len);
@@ -96,7 +96,7 @@ int	len_to_newline(t_list *list)
 void	free_them_all(t_list **list, t_list *clean_node, char *buf)
 {
 	t_list	*tmp;
-	
+
 	if (!*list)
 		return ;
 	while (*list)

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:26:54 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/05/22 19:35:41 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:44:10 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ void	clean_list(t_list **list)
 	i = 0;
 	j = 0;
 	while (last_node->str_buf[i] && last_node->str_buf[i] != '\n')
-		++i;
-	while (last_node->str_buf[i] && last_node->str_buf[++i])
-		buf[j++] = last_node->str_buf[i];
+		i++;
+	while (last_node->str_buf[i])
+	{
+		i++;
+		buf[j] = last_node->str_buf[i];
+		j++;
+	}
 	buf[j] = '\0';
 	clean_node->str_buf = buf;
 	clean_node->next = NULL;
@@ -46,7 +50,7 @@ char	*get_appended_list(t_list *list)
 		return (NULL);
 	str_len = len_to_newline(list);
 	next_str = malloc(str_len + 1);
-	if(!next_str)
+	if (!next_str)
 		return (NULL);
 	copy_str(list, next_str);
 	return (next_str);
@@ -56,7 +60,7 @@ void	append(t_list **list, char *buf)
 {
 	t_list	*new_node;
 	t_list	*last_node;
-	
+
 	last_node = find_last_node(*list);
 	new_node = malloc(sizeof(t_list));
 	if (!new_node)
@@ -78,7 +82,7 @@ void	create_list(t_list **list, int fd)
 	{
 		buf = malloc(BUFFER_SIZE + 1);
 		if (!buf)
-			return;
+			return ;
 		char_read = read(fd, buf, BUFFER_SIZE);
 		if (char_read == 0)
 		{
@@ -97,7 +101,7 @@ void	create_list(t_list **list, int fd)
 
 char	*get_next_line(int fd)
 {
-	static	t_list	*list = NULL;
+	static t_list	*list = NULL;
 	char			*next_line;
 
 	next_line = 0;
@@ -108,7 +112,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	create_list(&list, fd);
-	if(!list)
+	if (!list)
 		return (NULL);
 	next_line = get_appended_list(list);
 	clean_list(&list);
@@ -119,12 +123,16 @@ char	*get_next_line(int fd)
 // {
 // 	int		fd;
 // 	char	*line;
-// 	int		lines;
+// 	int		lines_nbr;
 
-// 	lines = 1;
+// 	lines_nbr = 1;
 // 	fd = open("file.txt", O_RDONLY);
 
-// 	while ((line = get_next_line(fd)))
-// 		printf("%d -> %s\n", lines++, line);
+// 	line = get_next_line(fd);
+// 	while (line)
+// 	{
+// 		printf("%d -> %s\n", lines_nbr++, line);
+// 		free(line);
+// 	}
 // 	return (0);
 // }
