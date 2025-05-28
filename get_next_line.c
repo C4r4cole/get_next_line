@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:26:54 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/05/27 16:44:10 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:21:04 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,7 @@ char	*get_next_line(int fd)
 // 	lines_nbr = 1;
 // 	fd = open("file.txt", O_RDONLY);
 
-// 	line = get_next_line(fd);
-// 	while (line)
+// 	while ((line = get_next_line(fd)))
 // 	{
 // 		printf("%d -> %s\n", lines_nbr++, line);
 // 		free(line);
